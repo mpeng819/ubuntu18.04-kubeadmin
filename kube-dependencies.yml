@@ -1,6 +1,10 @@
 - hosts: all
   become: yes
   tasks:
+   - name: disable swap, if any
+      become: true
+      shell: swapoff -a
+      
    - name: install Docker
      apt:
        name: docker.io
@@ -34,9 +38,6 @@
        name: kubeadm=1.16.2-00
        state: present
 
-- hosts: master
-  become: yes
-  tasks:
    - name: install kubectl
      apt:
        name: kubectl=1.16.2-00
