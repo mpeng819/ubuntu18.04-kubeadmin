@@ -1,0 +1,10 @@
+[masters]
+k8s-master ansible_host=172.16.10.20 
+
+[workers]
+k8s-node1 ansible_host=172.16.10.21
+k8s-node2 ansible_host=172.16.10.22 
+k8s-node2 ansible_host=172.16.10.22
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
