@@ -27,7 +27,7 @@
         state: present
         groups: apstra
         append: true
-        create_home: true
+        createhome: true
         shell: /bin/bash
 
     - name: Set authorized key for remote user
