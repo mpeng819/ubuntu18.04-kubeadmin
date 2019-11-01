@@ -1,4 +1,5 @@
 ####ansible-playbook initial_server_setup.yml -i hosts -u apstra -k -s
+
 ---
 - hosts: all
   remote_user: apstra
@@ -76,6 +77,12 @@
       ufw:
         rule: allow
         name: OpenSSH
+
+    - name: Allow all access to tcp port 6443
+      ufw:
+        rule: allow
+        port: 6443
+        proto: tcp
 
     - name: UFW - Deny all other incoming traffic by default
       ufw:
