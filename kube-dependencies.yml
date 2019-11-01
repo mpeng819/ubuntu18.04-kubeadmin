@@ -2,8 +2,8 @@
   become: yes
   tasks:
    - name: disable swap, if any
-      become: true
-      shell: swapoff -a
+     become: true
+     shell: swapoff -a
       
    - name: install Docker
      apt:
