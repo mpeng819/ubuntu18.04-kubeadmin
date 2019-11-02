@@ -7,7 +7,7 @@
   vars:
     create_user: apstra
     copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
-    sys_packages: [ 'curl', 'vim', 'git', 'ufw' ]
+    sys_packages: [ 'curl', 'git', 'ufw','ca-certificates','software-properties-common' ]
 
   tasks:
     - name: Make sure we have a 'apstra' group
@@ -67,6 +67,13 @@
       - { name: k8s-node2, ip: 172.16.10.22 }
       - { name: k8s-node3, ip: 172.16.10.23 }
 
+    - name: Insert ENV in .bashrc for calicoctl
+      blockinfile:
+        path: /home/apstra/.bashrc
+        block: |
+          export DATASTORE_TYPE=kubernetes
+          export KUBECONFIG=~/.kube/config
+
     - name: Update apt
       apt: update_cache=yes
 
@@ -78,14 +85,27 @@
         rule: allow
         name: OpenSSH
 
-    - name: Allow all access to tcp port 6443
+    - name: Allow all access to tcp port 6443 for connecting to k8s api-server
       ufw:
         rule: allow
         port: 6443
         proto: tcp
+
+    - name: Allow all access to tcp port 179 for BGP
+      ufw:
+        rule: allow
+        port: 179
+        proto: tcp
+
+    - name: Download calicoctl
+      get_url:
+        url: https://github.com/projectcalico/calicoctl/releases/download/v3.10.0/calicoctl
+        dest: /usr/local/bin/calicoctl
+        mode: '0555'
 
     - name: UFW - Deny all other incoming traffic by default
       ufw:
         state: enabled
         policy: deny
         direction: incoming
+
