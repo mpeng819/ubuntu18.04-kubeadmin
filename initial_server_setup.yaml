@@ -1,4 +1,4 @@
-####ansible-playbook initial_server_setup.yml -i hosts -u apstra -k -s
+## ansible-playbook -u apstra -k -s -i hosts init_server_setup.yaml
 
 ---
 - hosts: all
