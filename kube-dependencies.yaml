@@ -1,4 +1,5 @@
----
+## ansible-playbook -u apstra -k -s -i hosts kube-dependencies.yml
+----
 - hosts: all
   become: yes
   tasks:
@@ -31,6 +32,30 @@
       repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ lsb_release.stdout }} stable
       state: present
       filename: 'docker'
+
+   - name: Create directory
+     file:
+      path: "/etc/systemd/system/docker.service.d"
+      state: directory
+
+   - name: Create /etc/docker/daemon.json file
+     file:
+      path: "/etc/docker/daemon.json"
+      state: touch
+      mode: "666"
+
+   - name: Change the cgroupdriver to systemd
+     blockinfile:
+      path: "/etc/docker/daemon.json"
+      block: |
+        {
+          "exec-opts": ["native.cgroupdriver=systemd"],
+          "log-driver": "json-file",
+          "log-opts": {
+                "max-size": "100m"
+          },
+          "storage-driver": "overlay2"
+        }
 
    - name: install Docker
      apt:
