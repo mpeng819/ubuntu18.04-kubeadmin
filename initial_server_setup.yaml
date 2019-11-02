@@ -69,7 +69,7 @@
 
     - name: Insert ENV in .bashrc for calicoctl
       blockinfile:
-        path: /home/apstra/.bashrc
+        path: /home/{{ create_use }}/.bashrc
         block: |
           export DATASTORE_TYPE=kubernetes
           export KUBECONFIG=~/.kube/config
