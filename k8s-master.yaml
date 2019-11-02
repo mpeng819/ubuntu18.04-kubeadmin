@@ -1,3 +1,4 @@
+## ansible-playbook -u apstra -k -s -i hosts k8s-master.yml
 ---
 - hosts: master
   become: yes
