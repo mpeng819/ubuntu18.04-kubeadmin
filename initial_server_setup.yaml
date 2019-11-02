@@ -1,4 +1,4 @@
-## ansible-playbook -u apstra -k -s -i hosts init_server_setup.yaml
+## ansible-playbook -u apstra -k -s -i hosts initial_server_setup.yaml
 
 ---
 - hosts: all
@@ -69,7 +69,7 @@
 
     - name: Insert ENV in .bashrc for calicoctl
       blockinfile:
-        path: /home/{{ create_use }}/.bashrc
+        path: /home/{{ create_user }}/.bashrc
         block: |
           export DATASTORE_TYPE=kubernetes
           export KUBECONFIG=~/.kube/config
