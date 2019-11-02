@@ -1,4 +1,6 @@
---
+## ansible-playbook -u apstra -k -s -i hosts k8s-nodes.yaml
+
+---
 - hosts: master
   become: yes
   gather_facts: true
@@ -16,7 +18,6 @@
   become: yes
   tasks:
     - name: Join Cluster
-   #   shell: "{{ hostvars['k8s-master'].join_command }} >> node_joined.txt"
       shell: "{{ hostvars['k8s-master'].join_command }} >> node_joined.txt"
       args:
         chdir: $HOME
