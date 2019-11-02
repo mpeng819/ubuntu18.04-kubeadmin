@@ -1,5 +1,5 @@
-## ansible-playbook -u apstra -k -s -i hosts kube-dependencies.yml
-----
+## ansible-playbook -u apstra -k -s -i hosts kube-dependencies.yaml
+---
 - hosts: all
   become: yes
   tasks:
