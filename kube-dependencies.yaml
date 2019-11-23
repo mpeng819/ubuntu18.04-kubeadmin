@@ -1,4 +1,4 @@
-## ansible-playbook -u apstra -k -s -i hosts kube-dependencies.yaml
+## ansible-playbook -i hosts -u vagrant kube-dependencies.yaml
 ---
 - hosts: all
   become: yes
@@ -95,17 +95,17 @@
 
    - name: install kubelet
      apt:
-       name: kubelet=1.16.2-00
+       name: kubelet=1.16.3-00
        state: present
        update_cache: true
 
    - name: install kubeadm
      apt:
-       name: kubeadm=1.16.2-00
+       name: kubeadm=1.16.3-00
        state: present
 
    - name: install kubectl
      apt:
-       name: kubectl=1.16.2-00
+       name: kubectl=1.16.3-00
        state: present
        force: yes
