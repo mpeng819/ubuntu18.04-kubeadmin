@@ -1,4 +1,4 @@
-## ansible-playbook -u apstra -k -s -i hosts k8s-nodes.yaml
+## ansible-playbook -u vagrant -k -s -i hosts k8s-nodes.yaml
 
 ---
 - hosts: master
