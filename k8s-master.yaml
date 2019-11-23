@@ -1,4 +1,4 @@
-## ansible-playbook -u apstra -k -s -i hosts k8s-master.yml
+## ansible-playbook -i hosts -u vagrant k8s-master.yaml
 ---
 - hosts: master
   become: yes
@@ -11,7 +11,7 @@
 
     - name: create .kube directory
       become: yes
-      become_user: apstra
+      become_user: vagrant
       file:
         path: $HOME/.kube
         state: directory
@@ -20,13 +20,13 @@
     - name: copy admin.conf to user's kube config
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: /home/apstra/.kube/config
+        dest: /home/vagrant/.kube/config
         remote_src: yes
-        owner: apstra
+        owner: vagrant
 
     - name: install Pod network
       become: yes
-      become_user: apstra
+      become_user: vagrant
       shell: kubectl apply -f https://docs.projectcalico.org/v3.10/manifests/calico.yaml >> pod_network_setup.txt
       args:
         chdir: $HOME
