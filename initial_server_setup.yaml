@@ -45,7 +45,7 @@
         state: present
         regexp: '^#?PermitRootLogin'
         line: 'PermitRootLogin prohibit-password'
-    
+
     - name: Disable password authentication
       lineinfile:
         path: /etc/ssh/sshd_config
@@ -64,17 +64,13 @@
         line: 127.0.1.1 {{ inventory_hostname }}
 
     - name: Add hosts mappings to /etc/hosts
-      blockinfile:
-        path: /etc/hosts
-        block: |          
-          {{ item.ip }} {{ item.name }}
-        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
-      with_items:
-      - { name: k8s-master, ip: 172.16.10.20 }
-      - { name: k8s-node1, ip: 172.16.10.21 }
-      - { name: k8s-node2, ip: 172.16.10.22 }
-      - { name: k8s-node3, ip: 172.16.10.23 }
-      - { name: k8s-node4, ip: 172.16.10.24 }
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '{{ hostvars[item].ansible_host }}.*{{ item }}$'
+        line: "{{ hostvars[item].ansible_host }}  {{item}}"
+        state: present
+      become: yes
+      with_items: "{{ groups.all }}"
 
     - name: Insert ENV in .bashrc for calicoctl
       blockinfile:
