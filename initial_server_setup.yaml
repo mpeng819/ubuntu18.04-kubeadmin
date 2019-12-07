@@ -85,31 +85,20 @@
     - name: Install required system packages
       apt: name={{ sys_packages }} state=latest
 
-    - name: UFW - Allow SSH connections
-      ufw:
-        rule: allow
-        name: OpenSSH
 
-    - name: Allow all access to tcp port 6443 for connecting to k8s api-server
-      ufw:
-        rule: allow
-        port: '6443'
-        proto: tcp
-
-    - name: Allow all access to tcp port 179 for BGP
-      ufw:
-        rule: allow
-        port: '179'
-        proto: tcp
-
-    - name: UFW - Deny all other incoming traffic by default
+    - name: UFW - Enable UFW and allow everything
       ufw:
         state: enabled
-        policy: deny
-        direction: incoming
+        policy: allow
+        
+    - name: Get calicoctl from the website
+      get_url:
+         url: https://github.com/projectcalico/calicoctl/releases/download/v3.10.1/calicoctl
+         dest: /usr/local/bin/calicoctl
+         mode: '0555'
 
-    - name: Copy calicoctl
-      copy:
-        src: /Users/mpeng/Downloads/calicoctl
-        dest: /usr/local/bin/calicoctl
-        mode: '0555'
+#    - name: Copy calicoctl
+#      copy:
+#        src: /Users/mpeng/Downloads/calicoctl
+#        dest: /usr/local/bin/calicoctl
+#        mode: '0555'
